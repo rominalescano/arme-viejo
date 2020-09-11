@@ -87,8 +87,9 @@ wp-content/themes/*
 !wp-content/themes/arme
 !wp-content/themes/multiple-business
 wp-content/mu-plugins/
+!wp-content/mu-plugins/tests-vocacionales-plugin
 wp-content/wp-cache-config.php
-wp-content/plugins/
+wp-content/plugins/*
 wp-content/languages/
 wp-content/resources/
 
