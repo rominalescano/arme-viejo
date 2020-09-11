@@ -1,0 +1,59 @@
+/* HOME */
+/* Quito los datos meta-date, meta-author, meta-   de los post*/
+.meta  {
+    display: none;
+   }
+   
+/* Quito el icono de post de los post*/
+.post-format-outer  {
+       display: none;
+      }
+   
+/* tamaño letra y margen superior titulo de la pagina*/
+.site-branding .site-title  {
+    font-size: 25px;
+    margin-top: 25px;
+   }
+   
+.home .wrapper.site-header.wrap-fixed-header {
+       background-color: transparent;
+   } 
+.wrap-inner-banner{
+    height: 650px;
+    opacity: 1;
+}
+
+.banner-overlay {
+    background-color: transparent;
+}
+
+body.fixed-nav-active .wrap-fixed-header{
+    box-shadow: none;
+}
+/* RETOQUES AL MENU CON EFECTO CUANDO SCROLEE*/
+
+.site-header{
+    position: relative;
+}
+.site-header.effect {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    left: 0;
+}
+
+.site-header.effect *{
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+
+.home .wrapper.site-header.wrap-fixed-header.effect{
+    padding-bottom: 0px;
+    padding-top: 0px;
+    background-color: rgb(250,250,250,0.5);
+
+} 
+

@@ -1,0 +1,44 @@
+/*
+Theme Name: Arme Multiple-Business
+Theme URI: https://try.sinatrawp.com
+Description: Customización del Theme Multiple_Business
+Version: 1.0
+Author: Romina Lescano
+Author URI: https://github.com/rominalescano
+Template: multiple-business
+*/
+
+form.cuestionario {
+    max-width: 600px;
+}
+
+form.cuestionario label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+form.cuestionario .form-input {
+    padding: 1em;
+}
+
+form.cuestionario .form-input input[type='text'],
+form.cuestionario .form-input input[type='email'],
+form.cuestionario textarea {
+    display: block;
+    width: 100%;
+}
+
+p.exito {
+    font-size: 1.5em;
+    padding: 1em;
+    border: 2px solid green;
+    background: lightgreen;
+}
+
+p.error {
+    font-size: 1.5em;
+    padding: 1em;
+    border: 2px solid red;
+    background: #ff8787;
+}

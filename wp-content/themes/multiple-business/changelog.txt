@@ -1,0 +1,42 @@
+== Changelog ==
+
+= 1.1.1 =
+* Breadcrumb file updated to fix Google search console warnings.
+
+= 1.1.0 = 
+* Added license and copyright information in readme and style files.
+
+= 1.0.9 =
+* Fixed post category link color and style issue.
+
+= 1.0.8 =
+* Added support for wp_body_open action.
+* Added theme info files.
+
+= 1.0.7 =
+* WooCommere compatibility style issues fixed.
+
+= 1.0.6 =
+* RSS feed social icon supported.
+
+= 1.0.5 =
+* Breadcrumb service icon name issue fixed.
+* Style issues fixed.
+
+= 1.0.4 =
+* Style issues fixed.
+
+= 1.0.3 =
+* Header and Slider image sizes updated. Now, the recommeded image size for header is 1920px X 380px and for slider 1920px X 750px.
+* RTL issue fixed.
+
+= 1.0.2 =
+* Team section page URL fixed.
+* Gutenberg compatibility style issues fixed.
+* Minor style issues fixed.
+
+= 1.0.1 =
+* Replaced screenshot images URL from readme.txt file.
+
+= 1.0.0 =
+* Initial release.
