@@ -1,14 +1,13 @@
 -- inserts de la tabla  wp_subgrupos_test 
 
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 1,“Test de Inteligencia I.L.V.”,1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 2,“Test de Inteligencia I.L.V.”,1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 3,“Test de Inteligencia  I.N.”,1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 4,“Test de Inteligencia  I.V.E”,1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 5,“Test de Inteligencia  I.M.”,1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 6,“Test de Inteligencia  I.M.”,1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 7,“Test de Inteligencia  I.M.”,1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 8,“Test de Inteligencia I.Inter.P”,1);
-
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 1,'Test de Inteligencia Lingüística Verbal',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 2,'Test de Inteligencia Logico Matematica',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 3,'Test de Inteligencia Naturista',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 4,'Test de Inteligencia Espacial',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 5,'Test de Inteligencia Musical',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 6,'Test de Inteligencia Corporal - Kinestésica',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 7,'Test de Inteligencia Intra-Personal',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (1, 8,'Test de Inteligencia Inter-Personal',1);
 
 insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (2, 1,'Para un adulto es absolutamente necesario tener el cariño y la aprobación de sus semejantes, familia, amigos.',1);
 insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (2, 2,'Debe ser indefectiblemente competente y casi perfecto en todo lo que emprende.',1);
