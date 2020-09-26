@@ -6,6 +6,9 @@
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  * @since Multiple Business 1.0.0
  */
+// inicio sesion
+session_start();
+ 
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -13,7 +16,18 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="http://gmpg.org/xfn/11">
+
+<!-- TODOS ESTOS ESTILOS SON PARA LOS STEPS -->
+
+  <link rel="stylesheet" href="assets/css/jquery.steps.css">
+  <script src="./assets/js/jquery-1.9.1.min.js"></script>     
+  <script src="./assets/js/jquery.steps.js"></script>
+
+
 	<?php wp_head(); ?>
+
+
+
 </head>
 
 <body <?php body_class(); ?>>

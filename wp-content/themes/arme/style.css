@@ -9,7 +9,18 @@ Template: multiple-business
 */
 
 form.cuestionario {
-    max-width: 600px;
+    max-width: 1000px;
+}
+
+.card-cuestionario{
+  background: #f7efef;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1); 
+  margin-top: 30px;
+}
+
+.radio_cuestionario {
+margin-left: 30px;
+margin-top: 10px;
 }
 
 form.cuestionario label {
@@ -29,7 +40,7 @@ form.cuestionario textarea {
     width: 100%;
 }
 
-p.exito {
+.exito {
     font-size: 1.5em;
     padding: 1em;
     border: 2px solid green;
@@ -42,3 +53,15 @@ p.error {
     border: 2px solid red;
     background: #ff8787;
 }
+
+.container-tests {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.aaacuestionario {
+    margin-top: 200px;
+    margin-bottom: 100px;
+}
+
+

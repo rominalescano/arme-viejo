@@ -14,18 +14,10 @@
  */
 
 get_header(); ?>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 </div><!-- #primary -->
 	<div class="container">
-		<div class="row justify-content-center formulario">
-
+		<div class="row justify-content-center" style="margin-top:200px;">
 			<div class="col-md-4">
 					<?php echo do_shortcode( '[contact-form-7 id="55" title="Formulario de contacto 1"]' ); ?>
 			</div>
