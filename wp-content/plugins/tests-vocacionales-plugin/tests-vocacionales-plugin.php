@@ -19,6 +19,7 @@ register_activation_hook(__FILE__, 'Rml_preguntas_test_init');
 register_activation_hook(__FILE__, 'Rml_respuestas_test_init');
 register_activation_hook(__FILE__, 'Rml_test_realizados_init');
 register_activation_hook(__FILE__, 'Rml_subgrupos_test_init');
+register_activation_hook(__FILE__, 'Rml_resultados_subgrupos_test_init');
 
 
 /**
@@ -131,6 +132,7 @@ function Rml_preguntas_test_init()
 
 function Rml_respuestas_test_init()
 {
+
     global $wpdb; // Este objeto global nos permite trabajar con la BD de WP
     // Crea la tabla si no existe
     $tabla_respuestas_test = $wpdb->prefix . 'respuestas_test';
@@ -138,6 +140,8 @@ function Rml_respuestas_test_init()
     $query = "CREATE TABLE IF NOT EXISTS $tabla_respuestas_test (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         pregunta_id mediumint(9) NOT NULL,
+        subgrupo_test_id mediumint(9) NOT NULL,
+        tipo_test_id mediumint(9) NOT NULL,
         alumno_id mediumint(9) NOT NULL,
         valor int (10) NOT NULL,
         ip varchar(300),
@@ -163,6 +167,29 @@ function Rml_test_realizados_init()
         tipo_test_id mediumint(9),
         valor int (10) NOT NULL,
         ip varchar(300),
+        created_at datetime,
+        estado smallint(4) NOT NULL,
+        UNIQUE (id)
+        ) $charset_collate;";
+    // La función dbDelta que nos permite crear tablas de manera segura se
+    // define en el fichero upgrade.php que se incluye a continuación
+    include_once ABSPATH . 'wp-admin/includes/upgrade.php';
+    dbDelta($query);
+}
+
+
+function Rml_resultados_subgrupos_test_init()
+{
+    global $wpdb; // Este objeto global nos permite trabajar con la BD de WP
+    // Crea la tabla si no existe
+    $tabla_resultados_subgrupos_test = $wpdb->prefix . 'resultados_subgrupos_test';
+    $charset_collate = $wpdb->get_charset_collate();
+    $query = "CREATE TABLE IF NOT EXISTS $tabla_resultados_subgrupos_test (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        alumno_id mediumint(9) NOT NULL,
+        tipo_test_id mediumint(9),
+        subgrupo_test_id mediumint(9) NOT NULL,  
+        total int (10) NOT NULL,
         created_at datetime,
         estado smallint(4) NOT NULL,
         UNIQUE (id)
@@ -420,6 +447,7 @@ function Rml_test_vocacionales_form()
                 //echo ($wpdb->last_error);
                 // echo 'escuela';
                 $id_pregunta= esc_textarea($pregunta->id);
+                $subgrupo_test_id=esc_textarea($pregunta->subgrupo_test_id);
                 $respuesta= $_POST[$id_pregunta];
                 //echo 'id_pregunta:'.$id_pregunta;
                 //echo 'respuesta:'. $respuesta;
@@ -430,6 +458,8 @@ function Rml_test_vocacionales_form()
                 $tabla_respuestas_test,
                 array(
                     'pregunta_id' => $id_pregunta,
+                    'subgrupo_test_id'=>$subgrupo_test_id,
+                    'tipo_test_id'=>$tipo_test_id,
                     'alumno_id' => $alumno_id,  
                     'valor' => $respuesta,
                     'ip' => $ip,
@@ -454,7 +484,36 @@ function Rml_test_vocacionales_form()
                 'estado' => $estado,
                 )
                 );
-                
+          
+            
+            $tabla_subgrupos_test = $wpdb->prefix . 'subgrupos_test';
+            $subgrupos_test = $wpdb->get_results("SELECT * FROM  $tabla_subgrupos_test WHERE tipo_test_id=$tipo_test_id");
+           
+            foreach ($subgrupos_test as $subgrupos) { 
+                $subgrupo_id= esc_textarea($subgrupos->subgrupo_test_id);
+                $resultados_test = $wpdb->get_results("SELECT * FROM  $tabla_respuestas_test WHERE alumno_id = $alumno_id and tipo_test_id = $tipo_test_id and subgrupo_test_id= $subgrupo_id");
+                $total=0;
+                foreach ($resultados_test as $resultado) {
+                    $valor= esc_textarea($resultado->valor);                   
+                    $total= $total + $valor;
+                    
+                }
+                echo $total;
+               
+                $tabla_resultados_subgrupos_test = $wpdb->prefix . 'resultados_subgrupos_test';
+                $wpdb->insert(
+                    $tabla_resultados_subgrupos_test,
+                    array(                        
+                        'alumno_id' => $alumno_id,
+                        'tipo_test_id' => $tipo_test_id,
+                        'subgrupo_test_id'=>$subgrupo_id,
+                        'total' => $total,
+                        'created_at' => $created_at,
+                        'estado' => $estado,
+                        )
+                        );
+                        echo ($wpdb->last_error);
+            }
 
             $var_style_display_none='display:none;';
             //style='margin-top: 150px!important;'
@@ -592,7 +651,8 @@ function Rml_test_vocacionales_form()
                                 <div class="col-12 col-md-3"> 
                                     <div class="form-input ml-3">
                                             <label for="<?php echo $id_pregunta;?> "> <?php echo $num_pregunta. " - " . $texto_pregunta;?>  </label>
-                                            <input class= "radio_cuestionario" type="checkbox" name="<?php echo $id_pregunta;?>" value="1" required> 
+                                            <input class= "radio_cuestionario" type="hidden" name="<?php echo $id_pregunta;?>" value="0"> 
+                                            <input class= "radio_cuestionario" type="checkbox" name="<?php echo $id_pregunta;?>" value="1"> 
                                     </div>   
                                 </div>                                  
                         <?php    } ?>
