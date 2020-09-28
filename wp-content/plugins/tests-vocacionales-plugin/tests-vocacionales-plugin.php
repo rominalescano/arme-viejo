@@ -191,39 +191,60 @@ function Rml_inscripcion_test_vocacionales_form()
     global $wpdb; // Este objeto global nos permite trabajar con la BD de WP
     // Si viene del formulario  grabamos en la base de datos
     $var_style_display_none='';
+   
 
     if (!empty($_POST)
         && $_POST['nombre'] != ''
         && $_POST['apellido'] != ''
+        && $_POST['edad'] != ''
         && $_POST['dni'] != ''
-        && is_email($_POST['correo'])
+        && $_POST['sexo'] != ''
+        && $_POST['correo'] != ''
+        && $_POST['escuela_procedencia'] != ''
+        && $_POST['ciudad'] != ''
+        && $_POST['provincia'] != ''
+        && $_POST['pais'] != ''
+        && $_POST['lugar_futuro_estudio'] != ''
         && $_POST['aceptacion'] == '1'
         ) {
-
+    
         $tabla_alumnos = $wpdb->prefix . 'alumnos';
 
         $nombre = sanitize_text_field($_POST['nombre']);
         $apellido = sanitize_text_field($_POST['apellido']);
+        $edad= $_POST['edad'];
         $dni = $_POST['dni'];
+        $sexo= $_POST['sexo'];
         $correo = $_POST['correo'];
+        $escuela_procedencia= $_POST['escuela_procedencia'];
+        $ciudad=  $_POST['ciudad'];
+        $provincia=  $_POST['provincia'];
+        $pais=  $_POST['pais'];
+        $lugar_futuro_estudio= $_POST['lugar_futuro_estudio'];
         $aceptacion = (int) $_POST['aceptacion'];
         $ip = Kfp_Obtener_IP_usuario();
         $created_at = date('Y-m-d H:i:s');
         $estado= 1;
-
  
         $exists = $wpdb->get_var( $wpdb->prepare(
           "SELECT COUNT(*) FROM $tabla_alumnos WHERE correo = %s", $_POST['correo']
         ) );
-       
+        //echo $wpdb->last_error;
         if ( ! $exists ) {
             $wpdb->insert(
                 $tabla_alumnos,
                 array(
                     'nombre' => $nombre,
                     'apellido' => $apellido,
+                    'edad' => $edad,
                     'dni' => $dni,
+                    'sexo' => $sexo,
                     'correo' => $correo,
+                    'escuela_procedencia' => $escuela_procedencia,
+                    'ciudad' => $ciudad,
+                    'provincia' => $provincia,
+                    'pais' => $pais,
+                    'lugar_futuro_estudio' => $lugar_futuro_estudio,
                     'aceptacion' => $aceptacion,
                     'ip' => $ip,
                     'created_at' => $created_at,
@@ -231,7 +252,7 @@ function Rml_inscripcion_test_vocacionales_form()
                 )
                 
             );
-       // echo $wpdb->last_error;
+        
         $var_style_display_none='display:none;';
         echo "<div class='container text-center mb-5 mt-5'>
             <b class='h3'>¡Perfecto ". $nombre ."! ya estás registrado, ahora manos a la obra</b>
@@ -276,13 +297,54 @@ function Rml_inscripcion_test_vocacionales_form()
                     <input type="text" name="apellido" id="apellido" required>
                 </div>
                 <div class="form-input">
+                    <label for="edad">Edad</label>
+                    <input type="text" name="edad" id="edad" required>
+                </div>
+                <div class="form-input">
                     <label for="dni">DNI</label>
                     <input type="text" name="dni" id="dni" required>
                 </div>
-                <div class="form-input">
-                    <label for='correo'>Correo Electrónico</label>
-                    <input type="email" name="correo" id="correo" required>
+                <label for="sexo"> SEXO </label>
+                                <input class= "radio_sexo" type="radio" name="sexo" value="1" required> 
+                                Femenino
+                                <br>
+                                <input class= "radio_sexo" type="radio" name="sexo" value="2" required> 
+                                Masculino
+                                <br>
+                                <input class= "radio_sexo" type="radio" name="sexo" value="3" required> 
+                                Otro
+                                <br>
+                                <div class="form-input">
+                <label for="correo">Mail</label>
+                    <input type="text" name="correo" id="correo" required>
                 </div>
+                <div class="form-input">
+                    <label for='escuela_procedencia'>¿En que escuela estudiaste tu secundario?</label>
+                    <input type="text" name="escuela_procedencia" id="escuela_procedencia" required>
+                </div>
+                <div class="form-input">
+                    <label for="ciudad">¿De qué ciudad eres?</label>
+                    <input type="text" name="ciudad" id="ciudad" required>
+                </div>
+                <div class="form-input">
+                    <label for="provincia">¿De qué Provincia eres?</label>
+                    <input type="text" name="provincia" id="provincia" required>
+                </div>
+                <div class="form-input">
+                    <label for="pais">¿De qué País eres?</label>
+                    <input type="text" name="pais" id="pais" required>
+                </div>
+                <label for="lugar_futuro_estudio"> ¿Solo buscas carreras en tu ciudad actual? o podrías trasladarte a otra ciudad para estudiar </label>
+                                <input class= "radio_sexo" type="radio" name="lugar_futuro_estudio" value="1" required> 
+                                Solo en mi ciudad
+                                <br>
+                                <input class= "radio_sexo" type="radio" name="lugar_futuro_estudio" value="2" required> 
+                                Puedo ir a estudiar a otra ciudad
+                                <br>
+                                <input class= "radio_sexo" type="radio" name="lugar_futuro_estudio" value="3" required> 
+                                No lo sé
+                                <br>
+
                 <div class="form-input">
                     <label for="aceptacion"> Arme Consultora se 
                         compromete a custodiar de manera responsable los datos que vas
@@ -425,40 +487,120 @@ function Rml_test_vocacionales_form()
         <form action="<?php get_the_permalink();?>" method="post" id="form_test"
                 class="cuestionario" style='<?php echo $var_style_display_none; ?>'>
                 <h4>Muy bien, <?php  echo $_SESSION['logged_in_user_name']; ?> </h4>
-                <h4>Elige para cada afirmación, las opción que creas acertada:</h4>  
+                 
                 
                     <?php wp_nonce_field('graba_alumnos', 'alumnos_nonce');
                    
-                    
-                    $tabla_subgrupos_test = $wpdb->prefix . 'subgrupos_test';
+                    $tabla_tipo_test = $wpdb->prefix . 'tipo_test';
+                    $tipo_pregunta_id= $wpdb->get_var( $wpdb->prepare ("SELECT tipo_preguntas FROM   $tabla_tipo_test WHERE  id= %d ", $tipo_test_id ) );
+                    $texto_test= $wpdb->get_var( $wpdb->prepare ("SELECT texto FROM   $tabla_tipo_test WHERE  id= %d ", $tipo_test_id ) );?>
+                    <h4><?php echo $texto_test; ?></h4> 
+             <?php  $tabla_subgrupos_test = $wpdb->prefix . 'subgrupos_test';
                     $subgrupos_test = $wpdb->get_results("SELECT * FROM  $tabla_subgrupos_test WHERE tipo_test_id=$tipo_test_id");
-                    
                     foreach ($subgrupos_test as $subgrupos) {
                         $subgrupo_id= esc_textarea($subgrupos->subgrupo_test_id);
                         $subgrupo_title= esc_textarea($subgrupos->nombre);
                         ?>         
                         <div class="card card-cuestionario"> 
                         <div class="h3 text-center mt-3 mb-3"><?php echo $subgrupo_title;  ?> </div>    
-                        <?php 
-                        
+                        <?php   
                         $tabla_preguntas_test = $wpdb->prefix . 'preguntas_test';
                         $preguntas_test = $wpdb->get_results("SELECT * FROM  $tabla_preguntas_test WHERE tipo_test_id=$tipo_test_id and subgrupo_test_id=$subgrupo_id");
-                            foreach ($preguntas_test as $pregunta) {
+                        if ($tipo_pregunta_id == 3) {?>  
+                        <div class="row">
+                                
+                        <?php }
+                        
+                            foreach ($preguntas_test as $pregunta) {  
                             $texto_pregunta = esc_textarea($pregunta->texto);
                             $subgrupo_pregunta=  esc_textarea($pregunta->subgrupo_test_id);
                             $id_pregunta= esc_textarea($pregunta->id); 
                             $num_pregunta= esc_textarea($pregunta->numero_pregunta); 
-                            ?>
-                            <div class="form-input ml-3">
-                                <label for="<?php echo $id_pregunta;?> "> <?php echo $num_pregunta. " - " . $texto_pregunta;?>  </label>
-                                <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="1" required> 
-                                Si
-                                <br>
-                                <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="0" required> 
-                                No
-                                <br>
+
+                            if ($tipo_pregunta_id == 1) {  ?>
+
+                                <div class="form-input ml-3">
+                                    <label for="<?php echo $id_pregunta;?> "> <?php echo $num_pregunta. " - " . $texto_pregunta;?>  </label>
+                                    <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="1" required> 
+                                    Si
+                                    <br>
+                                    <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="0" required> 
+                                    No
+                                    <br>
+                                </div>
+                        <?php } elseif ($tipo_pregunta_id == 2) {  ?>
+                                  
+                                 <div class="form-input ml-3">
+                                 <label for="<?php echo $id_pregunta;?> "> <?php echo $num_pregunta. " - " . $texto_pregunta;?>  </label>
+                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="4" required> 
+                                 Considero ser muy competente
+                                 <br>
+                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="3" required> 
+                                 Considero ser competente
+                                 <br>
+                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="2" required> 
+                                 Considero ser medianamente competente
+                                 <br>
+                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="1" required> 
+                                 Considero ser muy poco competente
+                                 <br>
+                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="0" required> 
+                                 Considero ser incompetente
+                                 <br>
+                             </div>  
+                        <?php } elseif ($tipo_pregunta_id == 4 ) { 
+                         
+
+                            if ( $subgrupo_id==1 ) {
+                               
+                                ?>
+                                <div class="form-input ml-3">
+                                 <label for="555"> </label>
+                                 <input class= "radio_cuestionario" type="radio" name="555" value="1" required> 
+                                 Tiendo a ser bastante independiente y confiado: pienso que la vida va mejor cuando la esperas de frente. Me fijo objetivos, me comprometo y deseo que ocurran las cosas. No me gusta quedarme sentado, prefiero realizar algo grande y dejar mi huella. No busco necesariamente confrontaciones, pero no me dejo llevar ni empujar tampoco. La mayor parte del tiempo sé lo que quiero y voy a por ello. Tiendo a trabajar mucho y a disfrutar mucho. 
+                                 <br>
+                                 <label for="555"></label>
+                                 <input class= "radio_cuestionario" type="radio" name="555" value="2" required> 
+                                 Tiendo a estar callado, y estoy acostumbrado a estar solo. Normalmente no atraigo mucho la atención en el aspecto social, y por lo general procuro no imponerme por la fuerza. No me siento cómodo destacando sobre los demás ni siendo competitivo. Probablemente muchos dirán que tengo algo de soñador, pues disfruto con mi imaginación. Puedo estar bastante a gusto sin pensar que tengo que ser activo todo el tiempo. 
+                                 <br>
+                                 <label for="555"></label>
+                                 <input class= "radio_cuestionario" type="radio" name="555" value="3" required> 
+                                 Tiendo a ser muy responsable y entregado. Me siento fatal si no cumplo mis compromisos o no hago lo que se espera de mí. Deseo que los demás sepan que estoy por ellos y que haré todo lo que crea que es mejor por ellos. Con frecuencia hago grandes sacrificios personales por el bien de otros, lo sepan o no lo sepan. No suelo cuidar bien de mí mismo; hago el trabajo que hay que hacer y me relajo (y hago lo que realmente deseo) si me queda tiempo. 
+                                 <br>  
+                                 </div> 
+                     <?php         } elseif ( $subgrupo_id==2 ) {
+                        
+                                ?>
+                                <div class="form-input ml-3">
+                                 <label for="556"></label>
+                                 <input class= "radio_cuestionario" type="radio" name="556" value="1" required> 
+                                 Soy una persona que normalmente mantiene una actitud positiva y piensa que las cosas se van a resolver para mejor. Suelo entusiasmarme por las cosas y no me cuesta encontrar en qué ocuparme. Me gusta estar con gente y ayudar a otros a ser felices; me agrada compartir con ellos mi bienestar. (No siempre me siento fabulosamente bien, pero trato de que nadie se dé cuenta.) Sin embargo, mantener esta actitud positiva ha significado a veces dejar pasar demasiado tiempo sin ocuparme de mis problemas. 
+                                 <br>
+                                 <label for="556"></label>
+                                 <input class= "radio_cuestionario" type="radio" name="556" value="2" required> 
+                                 Soy una persona que tiene fuertes sentimientos respecto a las cosas, la mayoría de la gente lo nota cuando me siento desgraciado por algo. Suelo ser reservado con los demás, pero soy más sensible de lo que dejo ver. Deseo saber a qué atenerme con los demás y con quiénes y con qué puedo contar; la mayoría de las personas tienen muy claro a qué atenerse conmigo. Cuando estoy alterado por algo deseo que los demás reaccionen y se emocionen tamo como yo. Conozco las reglas, pero no quiero que me digan lo que he de hacer. Quiero decidir por mí mismo.
+                                 <br>
+                                 <label for="556"></label>
+                                 <input class= "radio_cuestionario" type="radio" name="556" value="3" required> 
+                                 Tiendo a controlarme y a ser lógico, me desagrada hacer frente a los sentimientos. Soy eficiente, incluso perfeccionista, y prefiero trabajar solo. Cuando hay problemas o conflictos personales trato de no meter mis sentimientos por medio. Algunos dicen que soy demasiado frío y objetivo, pero no quiero que mis reacciones emocionales me distraigan de lo que realmente me importa. Por lo general, no muestro mis emociones cuando otras personas "me fastidian". 
+                                 <br>  
+                                 </div> 
+                     <?php     } 
+
+                         } elseif ($tipo_pregunta_id == 3) { 
+                                 ?>
+                                <div class="col-12 col-md-3"> 
+                                    <div class="form-input ml-3">
+                                            <label for="<?php echo $id_pregunta;?> "> <?php echo $num_pregunta. " - " . $texto_pregunta;?>  </label>
+                                            <input class= "radio_cuestionario" type="checkbox" name="<?php echo $id_pregunta;?>" value="1" required> 
+                                    </div>   
+                                </div>                                  
+                        <?php    } ?>
+                        <?php  } //cierra el foreach  
+                        if ($tipo_pregunta_id == 3) {?>  
                             </div>
-                        <?php  }  ?>
+                            
+                        <?php }  ?>
                         </div> 
                    <?php }  ?>
                 <div class="form-input">

@@ -547,4 +547,5 @@ insert into wp_preguntas_test (tipo_test_id, subgrupo_test_id, numero_pregunta, 
 insert into wp_preguntas_test (tipo_test_id, subgrupo_test_id, numero_pregunta, texto, estado) values (7, 4,19,'Poca Voluntad',1);
 insert into wp_preguntas_test (tipo_test_id, subgrupo_test_id, numero_pregunta, texto, estado) values (7, 4,20,'Crítico/a',1);
 
-
+insert into wp_preguntas_test (tipo_test_id, subgrupo_test_id, numero_pregunta, texto, estado) values (8, 1,1,'A',1);
+insert into wp_preguntas_test (tipo_test_id, subgrupo_test_id, numero_pregunta, texto, estado) values (8, 2,1,'B',1);

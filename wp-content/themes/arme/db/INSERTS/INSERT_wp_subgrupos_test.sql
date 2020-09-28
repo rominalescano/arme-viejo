@@ -49,16 +49,21 @@ insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) v
 insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (5, 3,'Pragmatico',1);
 insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (5, 4,'Reflexivo',1);
 
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (6, 1,'SAGUINEO',1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (6, 2,'COLÉRICO',1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (6, 3,'FLEMÁTICO ',1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (6, 4,'MELANCÓLICO',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (6, 1,'Temperamento Sanguineo',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (6, 2,'Temperamento Colérico',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (6, 3,'Temperamento Flemático',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (6, 4,'Temperamento Melancólico',1);
 
 
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (7, 1,'SAGUINEO',1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (7, 2,'COLÉRICO',1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (7, 3,'FLEMÁTICO ',1);
-insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (7, 4,'MELANCÓLICO',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (7, 1,'Temperamento Sanguineo',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (7, 2,'Temperamento Colérico',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (7, 3,'Temperamento Flemático ',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (7, 4,'Temperamento Melancólico',1);
+
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (8, 1,'Grupo 1',1);
+insert into wp_subgrupos_test (tipo_test_id, subgrupo_test_id, nombre, estado) values (8, 2,'Grupo 2',1);
+
+
 
 
 

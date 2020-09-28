@@ -18,7 +18,12 @@
             "choices": {
                 "1": "Tipo Test 1",
                 "2": "Tipo Test 2",
-                "3": "Tipo Test 3"
+                "3": "Tipo Test 3",
+                "4": "Tipo Test 4",
+                "5": "Tipo Test 5",
+                "6": "Tipo Test 6",
+                "7": "Tipo Test 7",
+                "8": "Tipo Test 8"
             },
             "default_value": [],
             "allow_null": 0,
@@ -50,6 +55,41 @@
                 "operator": "==",
                 "value": "399"
             }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "416"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "418"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "420"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "422"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "424"
+            }
         ]
     ],
     "menu_order": 0,
@@ -60,5 +100,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1599940094
+    "modified": 1601145793
 }
