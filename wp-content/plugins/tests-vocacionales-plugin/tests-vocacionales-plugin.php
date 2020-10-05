@@ -20,6 +20,7 @@ register_activation_hook(__FILE__, 'Rml_respuestas_test_init');
 register_activation_hook(__FILE__, 'Rml_test_realizados_init');
 register_activation_hook(__FILE__, 'Rml_subgrupos_test_init');
 register_activation_hook(__FILE__, 'Rml_resultados_subgrupos_test_init');
+register_activation_hook(__FILE__, 'Rml_textos_informe_subgrupos_test_init');
 
 
 /**
@@ -96,7 +97,6 @@ function Rml_subgrupos_test_init()
         tipo_test_id mediumint(9) NOT NULL,
         subgrupo_test_id mediumint(9) NOT NULL,
         nombre varchar(500) NOT NULL,
-        texto_resultado text,
         ip varchar(100),
         created_at datetime,
         estado smallint(4) NOT NULL,
@@ -190,7 +190,7 @@ function Rml_resultados_subgrupos_test_init()
     $query = "CREATE TABLE IF NOT EXISTS $tabla_resultados_subgrupos_test (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         alumno_id mediumint(9) NOT NULL,
-        tipo_test_id mediumint(9),
+        tipo_test_id mediumint(9) NOT NULL,
         subgrupo_test_id mediumint(9) NOT NULL,  
         total int (10) NOT NULL,
         created_at datetime,
@@ -203,6 +203,28 @@ function Rml_resultados_subgrupos_test_init()
     dbDelta($query);
 }
 
+
+function Rml_textos_informe_subgrupos_test_init()
+{
+    global $wpdb; // Este objeto global nos permite trabajar con la BD de WP
+    // Crea la tabla si no existe
+    $tabla_textos_informe_subgrupos_test = $wpdb->prefix . 'textos_informe_subgrupos_test';
+    $charset_collate = $wpdb->get_charset_collate();
+    $query = "CREATE TABLE IF NOT EXISTS $tabla_textos_informe_subgrupos_test (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        tipo_test_id mediumint(9) NOT NULL,
+        subgrupo_test_id mediumint(9) NOT NULL, 
+        nombre_subgrupo varchar(500), 
+        subgrupo_combinado mediumint(9), 
+        nombre_subgrupo_combinado varchar(100),
+        texto_resultado text NOT NULL,
+        UNIQUE (id)
+        ) $charset_collate;";
+    // La función dbDelta que nos permite crear tablas de manera segura se
+    // define en el fichero upgrade.php que se incluye a continuación
+    include_once ABSPATH . 'wp-admin/includes/upgrade.php';
+    dbDelta($query);
+}
 // El formulario puede insertarse en cualquier sitio con este shortcode
 // El código de la función que carga el shortcode hace una doble función:
 // 1-Graba los datos en la tabla si ha habido un envío desde el formulario
