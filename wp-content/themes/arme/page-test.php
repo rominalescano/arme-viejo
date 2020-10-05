@@ -50,7 +50,7 @@ $test_realizados = $wpdb->get_results("SELECT * FROM  $tabla_test_realizados WHE
 ?>
 <div class="container container-tests">
 <div class="h2"><?php  echo $_SESSION['logged_in_user_name']; ?> !</div>
-<div class="h5">Frente de ti vas a ver 7 botones llamados TEST que analizarán por completo distintas 
+<div class="h5">Frente de ti vas a ver 8 botones llamados TEST que analizarán por completo distintas 
    áreas de tu vida que influyen en tu vocación. Para ello, es necesario que completes cada test 
    en orden creciente de manera ordenada sin saltar de un test al otro desordenadamente. 
    <br> <br>

@@ -35,8 +35,8 @@ function Rml_alumnos_init()
     $charset_collate = $wpdb->get_charset_collate();
     $query = "CREATE TABLE IF NOT EXISTS $tabla_alumnos (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
-        nombre varchar(40) NOT NULL,
-        apellido varchar(40) NOT NULL,
+        nombre varchar(100) NOT NULL,
+        apellido varchar(100) NOT NULL,
         edad varchar(10) NOT NULL,
         dni varchar(10) NOT NULL,
         sexo varchar(10) NOT NULL,
@@ -47,7 +47,7 @@ function Rml_alumnos_init()
         pais varchar(100) NOT NULL,
         lugar_futuro_estudio varchar(10) NOT NULL,
         aceptacion smallint(4) NOT NULL,
-        ip varchar(300),
+        ip varchar(100),
         created_at datetime,
         estado smallint(4) NOT NULL,
         UNIQUE (id)
@@ -68,10 +68,12 @@ function Rml_tipo_test_init()
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         nombre varchar(40) NOT NULL,
         numero_test varchar(40) NOT NULL,
-        texto varchar(800),
+        texto_indicaciones text,
         tipo_preguntas varchar(40) NOT NULL,
-        descripcion_tipo_preguntas varchar(300),
-        ip varchar(300),
+        descripcion_tipo_preguntas varchar(250),
+        texto_encabezado_resultado text,
+        texto_finalizacion_resultado text,
+        ip varchar(100),
         created_at datetime,
         estado smallint(4) NOT NULL,
         UNIQUE (id)
@@ -80,6 +82,7 @@ function Rml_tipo_test_init()
     // define en el fichero upgrade.php que se incluye a continuación
     include_once ABSPATH . 'wp-admin/includes/upgrade.php';
     dbDelta($query);
+  
 }
 
 function Rml_subgrupos_test_init()
@@ -93,8 +96,8 @@ function Rml_subgrupos_test_init()
         tipo_test_id mediumint(9) NOT NULL,
         subgrupo_test_id mediumint(9) NOT NULL,
         nombre varchar(500) NOT NULL,
-        texto varchar(500),
-        ip varchar(300),
+        texto_resultado text,
+        ip varchar(100),
         created_at datetime,
         estado smallint(4) NOT NULL,
         UNIQUE (id)
@@ -117,9 +120,9 @@ function Rml_preguntas_test_init()
         tipo_test_id mediumint(9) NOT NULL,
         subgrupo_test_id mediumint(9) NOT NULL,
         numero_pregunta varchar(50),
-        texto varchar(500) NOT NULL,
+        texto text NOT NULL,
         tipo varchar(50),
-        ip varchar(300),
+        ip varchar(100),
         created_at datetime,
         estado smallint(4) NOT NULL,
         UNIQUE (id)
@@ -144,7 +147,7 @@ function Rml_respuestas_test_init()
         tipo_test_id mediumint(9) NOT NULL,
         alumno_id mediumint(9) NOT NULL,
         valor int (10) NOT NULL,
-        ip varchar(300),
+        ip varchar(100),
         created_at datetime,
         estado smallint(4) NOT NULL,
         UNIQUE (id)
@@ -166,7 +169,7 @@ function Rml_test_realizados_init()
         alumno_id mediumint(9) NOT NULL,
         tipo_test_id mediumint(9),
         valor int (10) NOT NULL,
-        ip varchar(300),
+        ip varchar(100),
         created_at datetime,
         estado smallint(4) NOT NULL,
         UNIQUE (id)
@@ -498,7 +501,7 @@ function Rml_test_vocacionales_form()
                     $total= $total + $valor;
                     
                 }
-                echo $total;
+                //echo $total;
                
                 $tabla_resultados_subgrupos_test = $wpdb->prefix . 'resultados_subgrupos_test';
                 $wpdb->insert(
@@ -512,7 +515,7 @@ function Rml_test_vocacionales_form()
                         'estado' => $estado,
                         )
                         );
-                        echo ($wpdb->last_error);
+                       // echo ($wpdb->last_error);
             }
 
             $var_style_display_none='display:none;';
@@ -552,7 +555,7 @@ function Rml_test_vocacionales_form()
                    
                     $tabla_tipo_test = $wpdb->prefix . 'tipo_test';
                     $tipo_pregunta_id= $wpdb->get_var( $wpdb->prepare ("SELECT tipo_preguntas FROM   $tabla_tipo_test WHERE  id= %d ", $tipo_test_id ) );
-                    $texto_test= $wpdb->get_var( $wpdb->prepare ("SELECT texto FROM   $tabla_tipo_test WHERE  id= %d ", $tipo_test_id ) );?>
+                    $texto_test= $wpdb->get_var( $wpdb->prepare ("SELECT texto_indicaciones FROM   $tabla_tipo_test WHERE  id= %d ", $tipo_test_id ) );?>
                     <h4><?php echo $texto_test; ?></h4> 
              <?php  $tabla_subgrupos_test = $wpdb->prefix . 'subgrupos_test';
                     $subgrupos_test = $wpdb->get_results("SELECT * FROM  $tabla_subgrupos_test WHERE tipo_test_id=$tipo_test_id");
@@ -693,32 +696,58 @@ function rml_test_vocacionales_menu()
 function rml_test_vocacionales_admin()
 {
     global $wpdb;
-    $tabla_alumnos = $wpdb->prefix . 'alumnos';
-    $tabla_preguntas = $wpdb->prefix . 'preguntas';
-    $tabla_respuestas = $wpdb->prefix . 'respuestas';
-    $alumnos = $wpdb->get_results("SELECT * FROM $tabla_alumnos
-    LEFT JOIN ");
-    echo '<div class="wrap"><h1>Lista de aspirantes</h1>';
+    echo '<div class="wrap"><h1>Alumnos - Test Realizados</h1>';
     echo '<table class="wp-list-table widefat fixed striped">';
-    echo '<thead><tr><th width="30%">Nombre</th><th width="20%">Correo</th>';
-    echo '<th>HTML</th><th>CSS</th><th>JS</th><th>PHP</th><th>WP</th><th>Total</th>';
+    echo '<thead><tr>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>Correo</th>
+    <th>Edad</th>
+    <th>DNI</th>
+    <th>Sexo</th>
+    <th>Escuela Procedencia</th>
+    <th>Ciudad</th>
+    <th>Provincia</th>
+    <th>País</th>
+    <th>Lugar Estudio Futuro</th>
+    <th>Acptó Terminos</th>
+    <th>Informe</th>';
+
     echo '</tr></thead>';
     echo '<tbody id="the-list">';
+    $tabla_alumnos = $wpdb->prefix . 'alumnos';
+    $alumnos = $wpdb->get_results("SELECT * FROM  $tabla_alumnos");
+    
     foreach ($alumnos as $alumno) {
+
         $nombre = esc_textarea($alumno->nombre);
+        $apellido= esc_textarea($alumno->apellido);
+        $edad= esc_textarea($alumno->edad);
+        $dni= esc_textarea($alumno->dni);
+        $sexo= esc_textarea($alumno->sexo);
         $correo = esc_textarea($alumno->correo);
-        $motivacion = esc_textarea($aspirante->motivacion);
-        $nivel_html = (int) $aspirante->nivel_html;
-        $nivel_css = (int) $aspirante->nivel_css;
-        $nivel_js = (int) $aspirante->nivel_js;
-        $nivel_php = (int) $aspirante->nivel_php;
-        $nivel_wp = (int) $aspirante->nivel_wp;
-        $total = $nivel_html + $nivel_css + $nivel_js + $nivel_php + $nivel_wp;
-        echo "<tr><td><a href='#' title='$motivacion'>$nombre</a></td>";
-        echo "<td>$correo</td><td>$nivel_html</td><td>$nivel_css</td>";
-        echo "<td>$nivel_js</td><td>$nivel_php</td><td>$nivel_wp</td>";
-        echo "<td>$total</td></tr>";
+        $escuela = esc_textarea($alumno->escuela_procedencia);
+        $ciudad = esc_textarea($alumno->ciudad);
+        $provincia = esc_textarea($alumno->provincia);
+        $pais = esc_textarea($alumno->pais);
+        $lugar_futuro_estudio = esc_textarea($alumno->lugar_futuro_estudio);
+        $acepto_terminos= esc_textarea($alumno->aceptacion);
+        $alumnos_id= esc_textarea($alumno->id);
+
+        if ($lugar_futuro_estudio==1) {$lugar_futuro_estudio="Solo en mi ciudad";}        
+        if ($lugar_futuro_estudio==2) {$lugar_futuro_estudio="Puedo ir a estudiar a otra ciudad";}   
+        if ($lugar_futuro_estudio==3) {$lugar_futuro_estudio="No lo sé";}  
+        if ($acepto_terminos==1) {$acepto_terminos="Si aceptó";}                      
+                               
+        echo "<tr><td><a href='/page/resultados/?alum=$alumnos_id'>$nombre</a></td><td>$apellido</td>";
+        echo "<td>$correo</td><td>$edad</td><td>$dni</td><td>$sexo</td>";
+        echo "<td>$escuela</td><td>$ciudad</td><td>$provincia</td><td>$pais</td><td>$lugar_futuro_estudio</td>
+        <td>$acepto_terminos</td><td><a href='/page/informe/?alum=$alumnos_id'>Informe</a></td></tr>"; 
+            
     }
+       
+      
+    
     echo '</tbody></table></div>';
 }
 
