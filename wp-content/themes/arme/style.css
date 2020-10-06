@@ -74,3 +74,31 @@ p.error {
   padding: 30px;
 }
 
+
+ /* TODO DE LA PAGINA DEL INFORME*/
+.contenedor-informe{
+max-width: 85%!important;
+ 
+}
+
+.titulo_result_test{
+  font-size: 2.5em;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+.texto_encabezado_result_test{
+  font-size: 1.8em;
+  font-weight: 400;
+  padding: 30px;
+
+}
+
+
+.texto_result_test{
+  font-size: 1.5em;
+  font-weight: 200;
+  padding: 10px;
+}

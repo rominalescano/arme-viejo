@@ -8,7 +8,7 @@
 </head>
 
 <?php
-echo $wpdb->last_error;
+//echo $wpdb->last_error;
 $alumno_id = $_GET['alum']; 
 $tabla_alumnos = $wpdb->prefix . 'alumnos';
 $alumno= $wpdb->get_row( $wpdb->prepare ("SELECT * FROM  $tabla_alumnos WHERE id= $alumno_id")); ?>
