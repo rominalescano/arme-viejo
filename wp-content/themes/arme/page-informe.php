@@ -59,7 +59,7 @@ and total <> 0 ORDER BY total DESC LIMIT 3"); // busca los tres mayores pero que
         } else {
 
             foreach ($resultados_test1_menor7 as $resultado_test1_menor7) {
-                $subgrupo= esc_textarea($resultado_test1_may7->subgrupo_test_id);
+                $subgrupo= esc_textarea($resultado_test1_menor7->subgrupo_test_id);
                 $alumno= esc_textarea($resultado_test1_menor7->alumno_id);
                 $total= esc_textarea($resultado_test1_menor7->total);
 
@@ -67,6 +67,7 @@ and total <> 0 ORDER BY total DESC LIMIT 3"); // busca los tres mayores pero que
                 $texto1 = $wpdb->get_var( $wpdb->prepare("SELECT texto_resultado FROM $tabla_textos_resultados_test 
                 WHERE tipo_test_id=1 and subgrupo_test_id=$subgrupo" ) ); 
                 echo '<p class="texto_result_test">'. $texto1. '</p><br><br>';
+                echo $wpdb->last_error;
             }
                 
         }
