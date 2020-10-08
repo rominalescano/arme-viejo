@@ -102,3 +102,10 @@ max-width: 85%!important;
   font-weight: 200;
   padding: 10px;
 }
+
+.texto_creencia {
+  font-size: 1.6em;
+  font-weight: 300;
+  padding: 10px;
+  font-weight: bold;
+}

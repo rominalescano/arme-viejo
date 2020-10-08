@@ -616,16 +616,16 @@ function Rml_test_vocacionales_form()
                                   
                                  <div class="form-input ml-3">
                                  <label for="<?php echo $id_pregunta;?> "> <?php echo $num_pregunta. " - " . $texto_pregunta;?>  </label>
-                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="4" required> 
+                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="2" required> 
                                  Considero ser muy competente
                                  <br>
-                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="3" required> 
+                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="1" required> 
                                  Considero ser competente
                                  <br>
-                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="2" required> 
+                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="0" required> 
                                  Considero ser medianamente competente
                                  <br>
-                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="1" required> 
+                                 <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="0" required> 
                                  Considero ser muy poco competente
                                  <br>
                                  <input class= "radio_cuestionario" type="radio" name="<?php echo $id_pregunta;?>" value="0" required> 
