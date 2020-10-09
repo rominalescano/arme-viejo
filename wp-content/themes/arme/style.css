@@ -78,19 +78,53 @@ p.error {
  /* TODO DE LA PAGINA DEL INFORME*/
 .contenedor-informe{
 max-width: 85%!important;
- 
+}
+
+.encabezado-informe-vocacional{
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: 400;
+  margin-top: 3em;
+  margin-bottom: 0.5em;
+  background: #f1bdbd; 
+  padding: 10px;
+
+}
+
+.encabezado-informe-vocacional-nombre{
+  text-align: center;
+  font-size: 2em;
+  font-weight: 600;
+  font-weight: bold;
+
+}
+
+
+.encabezado-informe-vocacional-dni{
+  text-align: center;
+  font-size: 1em;
+  font-weight: 600;
+  font-weight: bold;
+  margin-bottom: 2.5em;
+
 }
 
 .titulo_result_test{
-  font-size: 2.5em;
+  font-size: 1.5em;
   font-weight: 700;
   text-align: center;
   margin-top: 10px;
 }
 
+.texto_finalizacion_resultado {
+  font-size: 0.8em;
+  font-weight: 300;
+  margin-top: 10px;
+
+}
 
 .texto_encabezado_result_test{
-  font-size: 1.8em;
+  font-size: 1.3em;
   font-weight: 400;
   padding: 30px;
 
@@ -98,13 +132,13 @@ max-width: 85%!important;
 
 
 .texto_result_test{
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: 200;
   padding: 10px;
 }
 
 .texto_creencia {
-  font-size: 1.6em;
+  font-size: 1.1em;
   font-weight: 300;
   padding: 10px;
   font-weight: bold;
