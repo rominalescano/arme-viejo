@@ -38,14 +38,36 @@ session_start();
 //----------------
 
 global $wpdb;
-$tabla_alumnos = $wpdb->prefix . 'alumnos';
-$user_mail= $_SESSION['logged_in_user_mail'];
-$alumno_id= $wpdb->get_var( $wpdb->prepare ("SELECT id FROM  $tabla_alumnos WHERE correo =  %s ", $user_mail ) );
 
+$cadena_get= $_GET["cadena"];
+
+$tabla_alumnos = $wpdb->prefix . 'alumnos';
+
+
+$alumno= $wpdb->get_row( $wpdb->prepare ("SELECT * FROM  $tabla_alumnos WHERE cadena_hash =  %s ", $cadena_get) );
+$nombre_alumno= $alumno->nombre;
+$cadena_hash_bd=  $alumno->cadena_hash;
+$ingreso_al_link= $alumno->ingreso_al_link;
+$correo= $alumno->correo;
+$alumno_id= $alumno->id;
+$_SESSION['logged_in_user_id'] = session_id();
+$_SESSION['logged_in_user_name'] = $nombre_alumno;
+$_SESSION['logged_in_user_mail'] = $correo;
 
 $tabla_test_realizados = $wpdb->prefix . 'test_realizados';
 $test_realizados = $wpdb->get_results("SELECT * FROM  $tabla_test_realizados WHERE alumno_id= $alumno_id");
-//var_dump ($test_realizados);    
+
+
+$entrar= false;
+
+if ($cadena_get <> '') {
+
+   if ($cadena_get==$cadena_hash_bd  &&  $ingreso_al_link==0 ) {$entrar= true;}
+
+}
+
+
+if ($entrar) {
 
 ?>
 <div class="container container-tests">
@@ -79,8 +101,18 @@ foreach ($test_realizados as $test) {
    if ($id_test==5){ $var5='disabled'; }
    if ($id_test==6){ $var6='disabled'; }
    if ($id_test==7){ $var7='disabled'; }
-   if ($id_test==8){ $var8='disabled'; } }
-//echo $var1.$var2.$var3;
+   if ($id_test==8){
+       $var8='disabled';
+       //--- colocar $ingreso_al_link en 1  en la Base de Datos
+         $wpdb->update( 
+         $tabla_alumnos, 
+         array('ingreso_al_link'=> '1', ),
+          array( 'id' => $alumno_id )
+          );
+      
+      }
+} 
+
 ?>
 <div style="margin-top:30px;">
 <a class="btn btn-info btn-lg <?php echo  $var1 ?>"  href="/page/test-1" style="margin-right:15px;"> Test 1</a>
@@ -97,4 +129,18 @@ foreach ($test_realizados as $test) {
 </div>
 
 
-<?php get_footer(); ?>
+
+<?php
+
+} else { ?>
+
+   <div class="container container-tests">
+   <div class="h2"><?php  echo $_SESSION['logged_in_user_name']; ?> !</div>
+   <div class="h5">Este link ya ha sido utilizado, o es incorrecto. Comunicate con Arme Consulting.
+   </div>
+
+
+<?php
+}
+
+get_footer(); ?>

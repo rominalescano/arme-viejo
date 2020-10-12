@@ -84,7 +84,6 @@ and total <> 0 and total <> 1 and total <> 2  and total <> 3 and total <> 4  and
                 $texto1 = $wpdb->get_var( $wpdb->prepare("SELECT texto_resultado FROM $tabla_textos_resultados_test 
                 WHERE tipo_test_id=1 and subgrupo_test_id=$subgrupo" ) ); 
                 echo '<p class="texto_result_test">'. $texto1. '</p><br><br>';
-                
             }
                 
         }
@@ -93,7 +92,8 @@ and total <> 0 and total <> 1 and total <> 2  and total <> 3 and total <> 4  and
          </div>
 
  <?php
-        if (!empty($texto_finalizacion_resultado_test1)) { ?>
+        
+        if (!is_null($texto_finalizacion_resultado_test1)) { ?>
         <div class="card-footer">
           <p class="card-text texto_encabezado_result_test"> <?php echo $texto_finalizacion_resultado_test1; ?></p>
         </div> 
@@ -169,7 +169,7 @@ and total <> 0 and total <> 1 and total <> 2 and total <> 3 and total <> 4 ORDER
          </div>
 
 <?php
-        if (!empty($texto_finalizacion_resultado_test2)) { ?>
+        if (!is_null($texto_finalizacion_resultado_test2)) { ?>
         <div class="card-footer texto_finalizacion_resultado ">
           <p class="card-text texto_encabezado_result_test"> <?php echo $texto_finalizacion_resultado_test2; ?></p>
         </div> 
@@ -212,7 +212,7 @@ and total>=4 ORDER BY total DESC"); // solo se buscan los que tienen al menos 4 
                 $texto3 = $wpdb->get_var( $wpdb->prepare("SELECT texto_resultado FROM $tabla_textos_resultados_test 
                 WHERE tipo_test_id=3 and subgrupo_test_id=$subgrupo" ) ); 
 
-                echo '<p class="texto_result_test">'. $texto3. '</p><br><br>';
+                echo '<p class="texto_result_test">'. $texto3. '</p>';
 
 
             }
@@ -220,7 +220,7 @@ and total>=4 ORDER BY total DESC"); // solo se buscan los que tienen al menos 4 
 ?>
          </div>
 <?php
-if (!empty($texto_finalizacion_resultado_test3)) { ?>
+if (!is_null($texto_finalizacion_resultado_test3)) { ?>
         <div class="card-footer">
           <p class="card-text texto_encabezado_result_test"> <?php echo $texto_finalizacion_resultado_test3; ?></p>
         </div> 
@@ -266,7 +266,7 @@ and total>=4 ORDER BY total DESC"); // solo se buscan los que tienen al menos 4 
                 $texto4 = $wpdb->get_var( $wpdb->prepare("SELECT texto_resultado FROM $tabla_textos_resultados_test 
                 WHERE tipo_test_id=3 and subgrupo_test_id=$subgrupo" ) ); 
 
-                echo '<p class="texto_result_test">'. $texto4. '</p><br><br>';
+                echo '<p class="texto_result_test">'. $texto4. '</p>';
 
             }
         } 
@@ -274,7 +274,7 @@ and total>=4 ORDER BY total DESC"); // solo se buscan los que tienen al menos 4 
          </div>
 
 <?php
-if (!empty($texto_finalizacion_resultado_test4)) { ?>
+if (!is_null($texto_finalizacion_resultado_test4)) { ?>
 
         <div class="card-footer">
           <p class="card-text texto_encabezado_result_test"> <?php echo $texto_finalizacion_resultado_test4; ?></p>
@@ -340,7 +340,7 @@ and total <> 0 and total <> 1 and total <> 2  and total <> 3 and total <> 4  and
          </div>
 
  <?php
-        if (!empty($texto_finalizacion_resultado_test5)) { ?>
+        if (!is_null($texto_finalizacion_resultado_test5)) { ?>
         <div class="card-footer">
           <p class="card-text texto_encabezado_result_test"> <?php echo $texto_finalizacion_resultado_test5; ?></p>
         </div> 
@@ -395,8 +395,9 @@ $subgrupo_mayor_7= $wpdb->get_var("SELECT subgrupo_test_id FROM  $tabla_resultad
             }
         } 
 
-        if (!empty($subgrupo_mayor_7)){ 
-                    
+        if (!is_null($subgrupo_mayor_7)){ 
+                   
+          //VERRRRRRRRRRRRRRRRRRRRRRRR  
                 if ($subgrupo6 <> $subgrupo_mayor_7) {
                 $texto7 = $wpdb->get_var( $wpdb->prepare("SELECT texto_resultado FROM $tabla_textos_resultados_test 
                 WHERE tipo_test_id=7 and subgrupo_test_id=$subgrupo_mayor_7 and subgrupo_combinado=$subgrupo6" ) ); 
@@ -416,26 +417,23 @@ $subgrupo_mayor_7= $wpdb->get_var("SELECT subgrupo_test_id FROM  $tabla_resultad
 
 $primera_pregunta= $wpdb->get_var("SELECT total FROM  $tabla_resultados_subgrupos_test WHERE subgrupo_test_id=1 and tipo_test_id=8 and alumno_id=$alumno_id "); 
 $segunda_pregunta= $wpdb->get_var("SELECT total FROM  $tabla_resultados_subgrupos_test WHERE subgrupo_test_id=2 and tipo_test_id=8 and alumno_id=$alumno_id "); 
-$texto_encabezado_resultado_test6 = $wpdb->get_var( $wpdb->prepare(
+$texto_encabezado_resultado_test8 = $wpdb->get_var( $wpdb->prepare(
     "SELECT texto_encabezado_resultado FROM $tabla_tipo_test WHERE id=8" ) ); 
 
 ?>
 <div class="container-fluid contenedor-informe">
   <div class="card mb-4">
     <div class="card-header">
-        <p class="card-text titulo_result_test">Eneatipo </p>
+        <p class="card-text titulo_result_test">Eneagrama</p>
         <p class="card-text texto_encabezado_result_test"> <?php echo $texto_encabezado_resultado_test8; ?></p>
     </div>
     <div class="card-body">
                 
         <?php
-       
+               
                 $texto8 = $wpdb->get_var( $wpdb->prepare("SELECT texto_resultado FROM $tabla_textos_resultados_test 
                 WHERE tipo_test_id=8 and subgrupo_combinado=$primera_pregunta and subgrupo_test_id=$segunda_pregunta" ) ); 
-
                 echo '<p class="texto_result_test">'. $texto8. '</p><br><br>';
-
-
 ?>
          </div>
     </div>

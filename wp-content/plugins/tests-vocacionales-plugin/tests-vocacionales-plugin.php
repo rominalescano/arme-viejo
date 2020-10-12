@@ -48,6 +48,8 @@ function Rml_alumnos_init()
         pais varchar(100) NOT NULL,
         lugar_futuro_estudio varchar(10) NOT NULL,
         aceptacion smallint(4) NOT NULL,
+        cadena_hash varchar(100) NOT NULL,
+        ingreso_al_link smallint(1),
         ip varchar(100),
         created_at datetime,
         estado smallint(4) NOT NULL,
@@ -274,9 +276,12 @@ function Rml_inscripcion_test_vocacionales_form()
         $pais=  $_POST['pais'];
         $lugar_futuro_estudio= $_POST['lugar_futuro_estudio'];
         $aceptacion = (int) $_POST['aceptacion'];
+        $cadena_hash = crearCadena($_POST['correo']);
+        $ingreso_al_link =0;
         $ip = Kfp_Obtener_IP_usuario();
         $created_at = date('Y-m-d H:i:s');
         $estado= 1;
+
  
         $exists = $wpdb->get_var( $wpdb->prepare(
           "SELECT COUNT(*) FROM $tabla_alumnos WHERE correo = %s", $_POST['correo']
@@ -298,6 +303,8 @@ function Rml_inscripcion_test_vocacionales_form()
                     'pais' => $pais,
                     'lugar_futuro_estudio' => $lugar_futuro_estudio,
                     'aceptacion' => $aceptacion,
+                    'cadena_hash' => $cadena_hash,
+                    'ingreso_al_link'=> $ingreso_al_link,
                     'ip' => $ip,
                     'created_at' => $created_at,
                     'estado' => $estado,
@@ -306,12 +313,14 @@ function Rml_inscripcion_test_vocacionales_form()
             );
         
         $var_style_display_none='display:none;';
-        echo "<div class='container text-center mb-5 mt-5'>
-            <b class='h3'>¡Perfecto ". $nombre ."! ya estás registrado, ahora manos a la obra</b>
+        echo "<div class='container text-center mb-5 mt-5 exito'>
+            <b class='h3'>¡Perfecto ". $nombre ." ya estás registrado!</b>
             <br>  
-            <b class='h3'>Ingresa al siguiente botón para hacer los distintos Test</b>
+            <b class='h3'>En las próximas horas recibirás en tu mail un link para poder realizar los test. <br>
+            Te esperamos ahí! <br><br>
+            Recuerda que solo pordrás utilizar el link una única vez.
+            </b>
             <br>
-            <a class='btn btn-info btn-lg'  href='/page/test' style='margin-top: 40px;'> Hagamos los test aquí</a>
             </div>";
          // Guardo variables de sesion
         $_SESSION['logged_in_user_id'] = session_id();
@@ -426,6 +435,17 @@ function Rml_inscripcion_test_vocacionales_form()
 add_shortcode('rml_test_vocacionales' , 'Rml_test_vocacionales_form');
 
 
+
+function crearCadena($str){  
+    $result = sha1($str); 
+    return $result; 
+      
+    }
+
+
+
+
+
 /**
  * Crea y procesa el formulario que rellenan los aspirantes
  *
@@ -448,8 +468,7 @@ function Rml_test_vocacionales_form()
      $estado= 1;
 
     if (!empty($_POST)) {
-
-        
+      
         $error_ckeck=0;
         $preguntas_tipo_test = $wpdb->get_results("SELECT * FROM  $tabla_preguntas_test WHERE tipo_test_id= $tipo_test_id");
         
@@ -465,9 +484,12 @@ function Rml_test_vocacionales_form()
 
        
         if ($error_ckeck==0) {
+            
             $user_mail= $_SESSION['logged_in_user_mail'];
             $alumno_id= $wpdb->get_var( $wpdb->prepare ("SELECT id FROM  $tabla_alumnos WHERE correo =  %s ", $user_mail ) );
-            
+            $hash= $wpdb->get_var( $wpdb->prepare ("SELECT cadena_hash FROM  $tabla_alumnos WHERE correo =  %s ", $user_mail ) );
+
+           
             foreach ($preguntas_tipo_test as $pregunta) {
                 //echo ($wpdb->last_error);
                 // echo 'escuela';
@@ -494,6 +516,7 @@ function Rml_test_vocacionales_form()
                 );
             } 
 
+            
             $tabla_test_realizado = $wpdb->prefix . 'test_realizados';
             $valor= 1;
             //$alumno_id= $wpdb->get_var( $wpdb->prepare ("SELECT id FROM  $tabla_alumnos WHERE correo =  %s ", $user_mail ) );
@@ -542,10 +565,11 @@ function Rml_test_vocacionales_form()
 
             $var_style_display_none='display:none;';
             //style='margin-top: 150px!important;'
+
             echo "<div class='container exito text-center mb-5' >
             <b>Has completado el Test N° ". $tipo_test_id ."!</b>. Buen trabajo!<p>
             <br>  
-            <a class='btn btn-info btn-lg'  href='/page/test' style='margin-top: 40px;'> Volver </a>
+            <a class='btn btn-info btn-lg'  href='/page/test/?cadena=". $hash ."' style='margin-top: 40px;'> Volver </a>
             </div>";
             //muestro sesion
            
@@ -634,7 +658,6 @@ function Rml_test_vocacionales_form()
                              </div>  
                         <?php } elseif ($tipo_pregunta_id == 4 ) { 
                          
-
                             if ( $subgrupo_id==1 ) {
                                
                                 ?>
@@ -717,6 +740,7 @@ function rml_test_vocacionales_menu()
 
 function rml_test_vocacionales_admin()
 {
+
     global $wpdb;
     echo '<div class="wrap"><h1>Alumnos - Test Realizados</h1>';
     echo '<table class="wp-list-table widefat fixed striped">';
@@ -733,6 +757,8 @@ function rml_test_vocacionales_admin()
     <th>País</th>
     <th>Lugar Estudio Futuro</th>
     <th>Acptó Terminos</th>
+    <th>Realizó los Test</th>
+    <th>Enviar Link</th>
     <th>Informe</th>';
 
     echo '</tr></thead>';
@@ -754,24 +780,45 @@ function rml_test_vocacionales_admin()
         $pais = esc_textarea($alumno->pais);
         $lugar_futuro_estudio = esc_textarea($alumno->lugar_futuro_estudio);
         $acepto_terminos= esc_textarea($alumno->aceptacion);
+        $ingreso_al_link= esc_textarea($alumno->ingreso_al_link);
         $alumnos_id= esc_textarea($alumno->id);
 
         if ($lugar_futuro_estudio==1) {$lugar_futuro_estudio="Solo en mi ciudad";}        
         if ($lugar_futuro_estudio==2) {$lugar_futuro_estudio="Puedo ir a estudiar a otra ciudad";}   
         if ($lugar_futuro_estudio==3) {$lugar_futuro_estudio="No lo sé";}  
-        if ($acepto_terminos==1) {$acepto_terminos="Si aceptó";}                      
+        if ($acepto_terminos==1) {$acepto_terminos="Aceptó";} 
+        $ingreso_al_link = ($ingreso_al_link == 1) ? "Si" : "No";                     
                                
-        echo "<tr><td><a href='/page/resultados/?alum=$alumnos_id'>$nombre</a></td><td>$apellido</td>";
-        echo "<td>$correo</td><td>$edad</td><td>$dni</td><td>$sexo</td>";
-        echo "<td>$escuela</td><td>$ciudad</td><td>$provincia</td><td>$pais</td><td>$lugar_futuro_estudio</td>
-        <td>$acepto_terminos</td><td><a href='/page/informe/?alum=$alumnos_id'>Informe</a></td></tr>"; 
-            
-    }
+        echo "<tr>
+        <td><a href='/page/resultados/?alum=$alumnos_id'>$nombre</a></td>
+        <td>$apellido</td>
+        <td>$correo</td>
+        <td>$edad</td>
+        <td>$dni</td>
+        <td>$sexo</td>
+        <td>$escuela</td>
+        <td>$ciudad</td>
+        <td>$provincia</td>
+        <td>$pais</td>
+        <td>$lugar_futuro_estudio</td>
+        <td>$acepto_terminos</td>
+        <td>$ingreso_al_link</td>
+        <td><a href='/page/informe/?alum=$alumnos_id'>Informe</a></td>
+        <td><a href='/page/envioLink/?alum=$alumnos_id'> Enviar Link</a></td>
+        </tr>";
        
-      
-    
+    }
+        
     echo '</tbody></table></div>';
+
+?>
+
+<?php
 }
+
+
+
+
 
 /**
  * Devuelve la IP del usuario que está visitando la página
@@ -793,3 +840,4 @@ function Kfp_Obtener_IP_usuario()
         }
     }
 }
+?>

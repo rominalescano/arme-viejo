@@ -249,4 +249,3 @@ function create_media_text_gb_block() {
 }
 add_action('acf/init', 'create_media_text_gb_block');
 
-
